@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>华鸿家园物业比选投票系统</title>
+    <script src="https://cdn.tailwindcss.com/3.3.3"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #2d3748;
+        }
+        
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px 0 rgba(31, 38, 135, 0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.5);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.5);
+        }
+        
+        .highlight-text {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .highlight-text::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background-color: rgba(99, 102, 241, 0.2);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container mx-auto py-8 px-4">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-indigo-700 mb-2">华鸿家园物业比选投票系统</h1>
+            <p class="text-lg text-gray-600">请业主参与物业公司比选投票</p>
+        </div>
+        
+        <!-- 输入区域 -->
+        <div class="glassmorphism p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <i class="fas fa-edit text-indigo-500 mr-2"></i>
+                业主信息输入
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- 楼号选择 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">楼号</label>
+                    <select id="building" class="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">请选择楼号</option>
+                        <option value="1">1号楼</option>
+                        <option value="2">2号楼</option>
+                        <option value="3">3号楼</option>
+                        <option value="4">4号楼</option>
+                        <option value="5">5号楼</option>
+                        <option value="6">6号楼</option>
+                        <option value="7">7号楼</option>
+                        <option value="8">8号楼</option>
+                    </select>
+                </div>
+                
+                <!-- 单元号选择 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">单元号</label>
+                    <select id="unit" class="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">请选择单元号</option>
+                        <option value="1">1单元</option>
+                        <option value="2">2单元</option>
+                        <option value="3">3单元</option>
+                        <option value="4">4单元</option>
+                        <option value="5">5单元</option>
+                    </select>
+                </div>
+                
+                <!-- 门牌号输入 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">门牌号</label>
+                    <input type="text" id="room" class="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" placeholder="如: 101" maxlength="3">
+                </div>
+                
+                <!-- 面积输入 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">面积(㎡)</label>
+                    <input type="number" id="area" class="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" placeholder="如: 89.5" step="0.1">
+                </div>
+            </div>
+        </div>
+        
+        <!-- 投票按钮区域 -->
+        <div class="glassmorphism p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <i class="fas fa-vote-yea text-indigo-500 mr-2"></i>
+                投票选择
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- 恒富物业 -->
+                <div class="text-center">
+                    <button id="vote-hengfu" class="btn-primary w-full py-4 rounded-lg mb-2">
+                        <i class="fas fa-building mr-2"></i> 恒富物业
+                    </button>
+                    <button id="oppose-hengfu" class="btn-danger w-full py-2 rounded-lg">
+                        <i class="fas fa-thumbs-down mr-2"></i> 反对
+                    </button>
+                </div>
+                
+                <!-- 弃权 -->
+                <div class="text-center">
+                    <button id="vote-abstain" class="bg-gray-500 hover:bg-gray-600 text-white w-full py-4 rounded-lg transition-all">
+                        <i class="fas fa-hand-paper mr-2"></i> 弃权
+                    </button>
+                </div>
+                
+                <!-- 第一物业 -->
+                <div class="text-center">
+                    <button id="vote-diyi" class="btn-secondary w-full py-4 rounded-lg mb-2">
+                        <i class="fas fa-building mr-2"></i> 第一物业
+                    </button>
+                    <button id="oppose-diyi" class="btn-danger w-full py-2 rounded-lg">
+                        <i class="fas fa-thumbs-down mr-2"></i> 反对
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 数据展示区域 -->
+        <div class="glassmorphism p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <i class="fas fa-chart-bar text-indigo-500 mr-2"></i>
+                投票统计
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- 恒富物业统计 -->
+                <div class="bg-indigo-50 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-indigo-700 mb-2">恒富物业</h3>
+                    <div class="space-y-2">
+                        <p><i class="fas fa-vote-yea text-indigo-500 mr-2"></i> 票数: <span id="hengfu-votes" class="font-bold">0</span></p>
+                        <p><i class="fas fa-ruler-combined text-indigo-500 mr-2"></i> 总面积: <span id="hengfu-area" class="font-bold">0</span> ㎡</p>
+                        <p><i class="fas fa-thumbs-down text-indigo-500 mr-2"></i> 反对票: <span id="hengfu-oppose" class="font-bold">0</span></p>
+                        <p><i class="fas fa-ruler-combined text-indigo-500 mr-2"></i>
+                            反对面积: <span id="hengfu-oppose-area" class="font-bold">0</span> ㎡
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 弃权统计 -->
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">弃权</h3>
+                    <div class="space-y-2">
+                        <p><i class="fas fa-vote-yea text-gray-500 mr-2"></i> 票数: <span id="abstain-votes" class="font-bold">0</span></p>
+                        <p><i class="fas fa-ruler-combined text-gray-500 mr-2"></i>
+                            总面积: <span id="abstain-area" class="font-bold">0</span> ㎡
+                        </p>
+                          
+                    </div>
+                </div>
+                
+                <!-- 第一物业统计 -->
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-blue-700 mb-2">第一物业</h3>
+                    <div class="space-y-2">
+                        <p><i class="fas fa-vote-yea text-blue-500 mr-2"></i> 票数: <span id="diyi-votes" class="font-bold">0</span></p>
+                        <p><i class="fas fa-ruler-combined text-blue-500 mr-2"></i> 总面积: <span id="diyi-area" class="font-bold">0</span> ㎡</p>
+                        <p><i class="fas fa-thumbs-down text-blue-500 mr-2"></i> 反对票: <span id="diyi-oppose" class="font-bold">0</span></p>
+                        <p><i class="fas fa-ruler-combined text-blue-500 mr-2"></i>
+                            反对面积: <span id="diyi-oppose-area" class="font-bold">0</span> ㎡
+                        </p>
+                          
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 操作按钮 -->
+        <div class="glassmorphism p-6 flex justify-between">
+            <button id="undo" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg">
+                <i class="fas fa-undo mr-2"></i> 回退
+            </button>
+            <button id="export" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">
+                <i class="fas fa-file-export mr-2"></i> 导出JSON
+            </button>
+        </div>
+    </div>
+    
+    <footer class="bg-gray-100 py-4 mt-8">
+        <div class="container mx-auto px-4 text-center text-gray-600 text-sm">
+            <p>created by <a href="https://space.coze.cn" class="text-indigo-600 hover:underline">coze space</a></p>
+            <p>页面内容均由 AI 生成，仅供参考</p>
+        </div>
+    </footer>
+    
+    <script>
+        // 投票数据存储
+        let votes = {
+            hengfu: { votes: 0, area: 0, oppose: 0, opposeArea: 0 }, // + opposeArea
+            diyi:   { votes: 0, area: 0, oppose: 0, opposeArea: 0 }, // + opposeArea
+            abstain:{ votes: 0, area: 0 },                           // + area
+            history:[]
+        };
+        
+        // 更新UI显示
+        function updateUI() {
+            document.getElementById('hengfu-votes').textContent = votes.hengfu.votes;
+            document.getElementById('hengfu-area').textContent = votes.hengfu.area.toFixed(1);
+            document.getElementById('hengfu-oppose').textContent = votes.hengfu.oppose;
+            
+            document.getElementById('diyi-votes').textContent = votes.diyi.votes;
+            document.getElementById('diyi-area').textContent = votes.diyi.area.toFixed(1);
+            document.getElementById('diyi-oppose').textContent = votes.diyi.oppose;
+            
+            document.getElementById('abstain-votes').textContent = votes.abstain.votes;
+            document.getElementById('hengfu-oppose-area').textContent = votes.hengfu.opposeArea.toFixed(1);
+            document.getElementById('diyi-oppose-area').textContent   = votes.diyi.opposeArea.toFixed(1);
+            document.getElementById('abstain-area').textContent        = votes.abstain.area.toFixed(1);
+
+        }
+        
+        // 添加投票记录
+        function addVote(type, isOppose = false) {
+            const building = document.getElementById('building').value;
+            const unit = document.getElementById('unit').value;
+            const room = document.getElementById('room').value;
+            const area = parseFloat(document.getElementById('area').value) || 0;
+            
+            if (!building || !unit || !room) {
+                alert('请填写完整的楼号、单元号和门牌号');
+                return;
+            }
+            
+            // 记录投票历史
+            const voteRecord = {
+                building,
+                unit,
+                room,
+                area,
+                type,
+                isOppose,
+                timestamp: new Date().toISOString()
+            };
+            
+            votes.history.push(voteRecord);
+            
+            // 更新统计数据
+            if (isOppose) {
+                votes[type].oppose++;
+                votes[type].opposeArea += area; // 新增：反对面积累加
+            } else {
+                if (type !== 'abstain') {
+                    votes[type].votes++;
+                    votes[type].area += area;
+                } else {
+                    votes[type].votes++;
+                    votes[type].area += area;    // 新增：弃权面积累加
+                }
+            }
+            
+            // 清空门牌号和面积
+            document.getElementById('room').value = '';
+            document.getElementById('area').value = '';
+            
+            updateUI();
+        }
+        
+        // 回退操作
+        function undoLastVote() {
+            if (votes.history.length === 0) {
+                alert('没有可回退的投票记录');
+                return;
+            }
+            
+            const lastVote = votes.history.pop();
+            
+            if (lastVote.isOppose) {
+                votes[lastVote.type].oppose--;
+                votes[lastVote.type].opposeArea -= lastVote.area;  // 新增：反对面积回退
+            } else {
+                if (lastVote.type !== 'abstain') {
+                    votes[lastVote.type].votes--;
+                    votes[lastVote.type].area -= lastVote.area;
+                } else {
+                    votes[lastVote.type].votes--;
+                    votes[lastVote.type].area -= lastVote.area;    // 新增：弃权面积回退
+                }
+            }
+            
+            updateUI();
+        }
+        
+        // 导出JSON
+        function exportToJSON() {
+            const dataStr = JSON.stringify(votes, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = '华鸿家园物业投票数据.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+        
+        // 事件监听
+        document.getElementById('vote-hengfu').addEventListener('click', () => addVote('hengfu'));
+        document.getElementById('vote-diyi').addEventListener('click', () => addVote('diyi'));
+        document.getElementById('vote-abstain').addEventListener('click', () => addVote('abstain'));
+        document.getElementById('oppose-hengfu').addEventListener('click', () => addVote('hengfu', true));
+        document.getElementById('oppose-diyi').addEventListener('click', () => addVote('diyi', true));
+        document.getElementById('undo').addEventListener('click', undoLastVote);
+        document.getElementById('export').addEventListener('click', exportToJSON);
+    </script>
+</body>
+</html>
